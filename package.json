@@ -1,0 +1,13 @@
+{
+  "name": "face-detection",
+  "version": "1.0.0",
+  "main": "main.js",
+  "dependencies": {
+    "sharp": "^0.26.1"
+  },
+  "scripts": {
+    "predeploy": "rm -rf node_modules/sharp && npm install --platform=linux --arch=x64 --target=12.x sharp",
+    "deploy": "serverless deploy -v",
+    "postdeploy": "rm -rf node_modules/sharp && npm install sharp"
+  }
+}

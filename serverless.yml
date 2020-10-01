@@ -1,0 +1,41 @@
+service: face-detection
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 512
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+        - s3:DeleteObject
+      Resource: arn:aws:s3:::serverless-rekognition-person/*
+    - Effect: Allow
+      Action:
+        - rekognition:DetectFaces
+      Resource:
+        - '*'
+
+functions:
+  faceDetection:
+    handler: main.handle
+    events:
+      - s3:
+          bucket: serverless-rekognition-person
+          event: s3:ObjectCreated:*
+          rules: 
+            - suffix: .jpg
+      - s3:
+          bucket: serverless-rekognition-person
+          event: s3:ObjectCreated:*
+          rules: 
+            - suffix: .png
+      - s3:
+          bucket: serverless-rekognition-person
+          event: s3:ObjectCreated:*
+          rules: 
+            - suffix: .jpeg
